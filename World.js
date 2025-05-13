@@ -229,15 +229,15 @@ for (let x = 0; x < SIZE; x++) {
     let isGateOpening = (z === 0 && x >= GATE_START && x < GATE_END);
 
     if (isEdge && !isGateOpening) {
-      for (let y = 0; y < 3; y++) {
+      let height = Math.floor(Math.random() * 4) + 1; // height: 1–4
+      for (let y = 0; y < height; y++) {
         let wallBlock = new Cube(2, [x - SIZE / 2, y, z - SIZE / 2]);
         walls.push(wallBlock);
-        map[x][z] = y + 1; 
+        map[x][z] = height; // optional, keep map accurate
       }
     }
   }
-}
-for (let i = 0; i < 5; i++) {
+}r (let i = 0; i < 5; i++) {
   const x = Math.floor(Math.random() * 10) + 5;
   const z = Math.floor(Math.random() * 10) + 5;
 
