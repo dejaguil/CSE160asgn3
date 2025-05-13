@@ -22,6 +22,8 @@ var FSHADER_SOURCE = `
   uniform sampler2D u_Sampler2;
   uniform sampler2D u_Sampler3;
   uniform sampler2D u_Sampler4;
+  uniform sampler2D u_Sampler5;
+  uniform sampler2D u_Sampler6;
   uniform int u_TexChoice;
   uniform vec4 u_BaseColor;
   uniform float u_TexColorWeight;
@@ -33,6 +35,8 @@ var FSHADER_SOURCE = `
   else if (u_TexChoice == 3) texColor = texture2D(u_Sampler3, v_UV);
 
   else if (u_TexChoice == 4) texColor = texture2D(u_Sampler4, v_UV);
+  else if (u_TexChoice == 5) texColor = texture2D(u_Sampler5, v_UV);
+  else if (u_TexChoice == 6) texColor = texture2D(u_Sampler6, v_UV);
   gl_FragColor = mix(u_BaseColor, texColor, u_TexColorWeight);
   }
 `;
@@ -70,6 +74,8 @@ u_Sampler2 = gl.getUniformLocation(gl.program, 'u_Sampler2');
 u_Sampler3 = gl.getUniformLocation(gl.program, 'u_Sampler3');
 u_Sampler4 = gl.getUniformLocation(gl.program, 'u_Sampler4');
 u_TexChoice = gl.getUniformLocation(gl.program, 'u_TexChoice');
+u_Sampler5 = gl.getUniformLocation(gl.program, 'u_Sampler5');
+u_Sampler6 = gl.getUniformLocation(gl.program, 'u_Sampler6');
   gl.enable(gl.DEPTH_TEST);
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -231,7 +237,18 @@ for (let x = 0; x < SIZE; x++) {
     }
   }
 }
+for (let i = 0; i < 5; i++) {
+  const x = Math.floor(Math.random() * 10) + 5;
+  const z = Math.floor(Math.random() * 10) + 5;
 
+  // Tree trunk (brown texture index 5)
+  let trunk = new Cube(5, [x - SIZE/2, 0, z - SIZE/2], [0.25, 1, 0.25]);
+  walls.push(trunk);
+
+  // Tree top (green texture index 6)
+  let leaves = new Cube(6, [x - SIZE/2, 1, z - SIZE/2], [1, 1, 1]);
+  walls.push(leaves);
+}
 
 canvas.addEventListener('mousedown', (e) => {
   isMouseDown = true;
@@ -417,7 +434,7 @@ function getBlockInFront() {
 }
 function initTextures(gl, callback) {
   let loaded = 0;
-  const images = ['sky8.jpg', 'grass1.jpg', 'brick2.jpg', 'slime.jpg', 'magma.jpg'];
+  const images = ['sky8.jpg', 'grass1.jpg', 'brick.jpg', 'slime.jpg', 'magma.jpg', 'trunk.jpg', 'leaves.jpg'];
   const textures = [];
 
 for (let i = 0; i < images.length; i++) {
